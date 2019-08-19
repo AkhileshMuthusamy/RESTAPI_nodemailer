@@ -4,6 +4,7 @@
   "description": "Send email code template",
   "main": "server.js",
   "scripts": {
+    "start": "nodemon --exec \"node -r dotenv/config\" server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Akhilesh Muthusamy",
@@ -13,5 +14,8 @@
     "eslint": "^6.1.0",
     "nodemailer": "^6.3.0",
     "translate-json-object": "^2.3.3"
+  },
+  "devDependencies": {
+    "dotenv": "^8.1.0"
   }
 }
