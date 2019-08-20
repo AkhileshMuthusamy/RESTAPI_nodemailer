@@ -1,5 +1,5 @@
 const app = require('express')();
-const email = require('./_modules/email');
+const mailer = require('./_modules/mailer');
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
@@ -10,7 +10,16 @@ app.post('/api/forgotPassword', (req, res) => {
   const subject = 'Test HTML Template';
   const emailTemplate = './email/templates/forgotEmail.template.ejs';
 
-  email.sendEmail(toAddress, subject, emailTemplate, emailTemplateData, req, res);
+  mailer
+    .sendEmail(toAddress, subject, emailTemplate, emailTemplateData)
+    .then(info => {
+      console.log('Message sent: %s', info.messageId);
+      res.status(200).json({ result: 'Email sent successfully', message: info.messageId });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ Error: 'Internal error. Unable to proccess your request' });
+    });
 });
 
 app.listen(process.env.PORT, () => {
