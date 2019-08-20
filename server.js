@@ -11,7 +11,7 @@ app.post('/api/forgotPassword', (req, res) => {
   const emailTemplate = './email/templates/forgotEmail.template.ejs';
 
   mailer
-    .sendEmail(toAddress, subject, emailTemplate, emailTemplateData)
+    .sendHtmlEmail(toAddress, subject, emailTemplate, emailTemplateData)
     .then(info => {
       console.log('Message sent: %s', info.messageId);
       res.status(200).json({ result: 'Email sent successfully', message: info.messageId });

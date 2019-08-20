@@ -11,7 +11,7 @@ let transporter = nodemailer.createTransport({
   }
 });
 
-module.exports.sendEmail = function(toAddress, subject, bodyTemplate, bodyTemplateData) {
+function sendHtmlEmail(toAddress, subject, bodyTemplate, bodyTemplateData) {
   return new Promise(function(resolve, reject) {
     htmlEmail
       .render(bodyTemplate, bodyTemplateData)
@@ -36,4 +36,8 @@ module.exports.sendEmail = function(toAddress, subject, bodyTemplate, bodyTempla
         reject(err);
       });
   });
+}
+
+module.exports = {
+  sendHtmlEmail
 };
