@@ -1,17 +1,18 @@
+const app = require('express')();
 const email = require('./_modules/email');
+const bodyParser = require('body-parser');
 
-const obj = { changePasswordLink: 'www.google.co.in' };
+app.use(bodyParser.json());
 
-email.sendEmail(
-  'akhilesh.g2t@gmail.com',
-  'Test HTML Template',
-  './email/templates/forgotEmail.template.ejs',
-  obj,
-  (err, info) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log('Message sent: %s', info.messageId);
-    }
-  }
-);
+app.post('/api/forgotPassword', (req, res) => {
+  const emailTemplateData = { changePasswordLink: 'www.google.co.in' };
+  const toAddress = 'akhilesh.g2t@gmail.com';
+  const subject = 'Test HTML Template';
+  const emailTemplate = './email/templates/forgotEmail.template.ejs';
+
+  email.sendEmail(toAddress, subject, emailTemplate, emailTemplateData, req, res);
+});
+
+app.listen(process.env.PORT, () => {
+  console.log(`Lisening on port ${process.env.PORT}`);
+});
