@@ -38,6 +38,39 @@ function sendHtmlEmail(toAddress, subject, bodyTemplate, bodyTemplateData) {
   });
 }
 
+function sendEmailwithAttachment(toAddress, subject, body, attachmentBase64) {
+  return new Promise(function(resolve, reject) {
+    transporter.sendMail(
+      {
+        from: process.env.NOTIFY_EMAIL, // sender address
+        to: toAddress, // list of receivers
+        subject: subject, // Subject line
+        html: body, // html body
+        attachments: [
+          {
+            // utf-8 string as an attachment
+            filename: 'text1.txt',
+            content: 'hello world!'
+          },
+          {
+            filename: 'pdfDocument.pdf',
+            // data uri as an attachment
+            path: attachmentBase64
+          }
+        ]
+      },
+      (err, info) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(info);
+        }
+      }
+    );
+  });
+}
+
 module.exports = {
-  sendHtmlEmail
+  sendHtmlEmail,
+  sendEmailwithAttachment
 };
