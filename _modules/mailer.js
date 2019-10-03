@@ -73,7 +73,35 @@ function sendEmailwithAttachment(toAddress, subject, body, attachmentBase64) {
   });
 }
 
+function sendEmailwithAttachments(toAddress, subject, body, attachments) {
+  return new Promise(function(resolve, reject) {
+    let emailAttachments = [];
+    attachments.forEach(file => {
+      emailAttachments.push({ filename: file.originalname, content: file.buffer });
+    });
+
+    console.dir(emailAttachments);
+    transporter.sendMail(
+      {
+        from: process.env.NOTIFY_EMAIL, // sender address
+        to: toAddress, // list of receivers
+        subject: subject, // Subject line
+        html: body, // html body
+        attachments: emailAttachments
+      },
+      (err, info) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(info);
+        }
+      }
+    );
+  });
+}
+
 module.exports = {
   sendHtmlEmail,
-  sendEmailwithAttachment
+  sendEmailwithAttachment,
+  sendEmailwithAttachments
 };
