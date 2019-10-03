@@ -3,7 +3,9 @@ const mailer = require('./_modules/mailer');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer = require('multer');
-var upload = multer();
+var upload = multer({
+  limits: { fieldSize: 25 * 1024 * 1024 }
+});
 
 // const upload = multer({ storage: multer.memoryStorage() });
 
@@ -32,7 +34,7 @@ app.post('/api/forgotPassword', (req, res) => {
 
 app.post('/api/emailAttachment', (req, res) => {
   const toAddress = 'akhilesh.g2t@gmail.com';
-  const subject = 'Test pdf attachment';
+  const subject = 'Test attachment';
 
   console.log(req.body.pdfFile);
 
