@@ -40,6 +40,9 @@ function sendHtmlEmail(toAddress, subject, bodyTemplate, bodyTemplateData) {
 
 function sendEmailwithAttachment(toAddress, subject, body, attachmentBase64) {
   return new Promise(function(resolve, reject) {
+    const start = attachmentBase64.indexOf('=');
+    const end = attachmentBase64.indexOf(';', start);
+
     transporter.sendMail(
       {
         from: process.env.NOTIFY_EMAIL, // sender address
@@ -53,7 +56,7 @@ function sendEmailwithAttachment(toAddress, subject, body, attachmentBase64) {
             content: 'hello world!'
           },
           {
-            filename: 'pdfDocument.pdf',
+            filename: `${attachmentBase64.substring(start + 1, end)}`,
             // data uri as an attachment
             path: attachmentBase64
           }
